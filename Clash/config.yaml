@@ -57,12 +57,6 @@ proxy-groups:
       - HK 香港
       - HK Azure
     type: select
-  - name: DisneyPlus
-    proxies:
-      - HK 香港
-      - hysteria
-      - HK Azure
-    type: select
   - name: AUTO
     type: url-test
     proxies:
@@ -79,100 +73,24 @@ proxy-groups:
       - DIRECT
     type: select
 rule-providers:
-  Unbreak:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Unbreak.yaml
-    interval: 86400
-  DisneyPlus:
-    type: http
-    behavior: classical
-    path: ./RuleSet/DisneyPlus.yaml
-    interval: 86400
   Streaming:
     type: http
     behavior: classical
-    path: ./RuleSet/StreamingMedia/Streaming.yaml
-    interval: 86400
-  Global:
-    type: http
-    behavior: classical
-    path: ./RuleSet/Global.yaml
-    interval: 86400
-  China:
-    type: http
-    behavior: classical
-    path: ./RuleSet/China.yaml
-    interval: 86400
-  ChinaIP:
-    type: http
-    behavior: ipcidr
-    path: ./RuleSet/Extra/ChinaIP.yaml
+    path: ./RuleSet/Streaming.yaml
+    url: "https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml"
     interval: 86400
 rules:
-  - DOMAIN-SUFFIX,acme.sh,DIRECT
-  - DOMAIN-SUFFIX,wechat.com,DIRECT
-  - IP-CIDR,101.32.104.4/32,DIRECT
-  - IP-CIDR,101.32.104.41/32,DIRECT
-  - IP-CIDR,101.32.104.56/32,DIRECT
-  - IP-CIDR,101.32.118.25/32,DIRECT
-  - IP-CIDR,101.32.133.16/32,DIRECT
-  - IP-CIDR,101.32.133.53/32,DIRECT
-  - IP-CIDR,101.32.133.209/32,DIRECT
-  - IP-CIDR,129.226.3.47/32,DIRECT
-  - IP-CIDR,129.226.107.244/32,DIRECT
-  - DOMAIN-SUFFIX,weibo.com,PROXY
-  - DOMAIN-SUFFIX,weibo.cn,PROXY
-  - DOMAIN-SUFFIX,eggjs.org,PROXY
-  - DOMAIN-SUFFIX,imdb.com,PROXY
-  - DOMAIN-SUFFIX,xirikm.net,PROXY
-  - DOMAIN-SUFFIX,byrut.org,PROXY
-  - DOMAIN-SUFFIX,xboxdesignlab.xbox.com,PROXY
-  - DOMAIN-SUFFIX,principlerepo.com,PROXY
-  - DOMAIN-SUFFIX,forthebadge.com,PROXY
-  - DOMAIN-SUFFIX,btc.com,PROXY
-  - DOMAIN-SUFFIX,7-zip.org,PROXY
-  - DOMAIN-SUFFIX,typora.io,PROXY
-  - DOMAIN-SUFFIX,steampowered.com,PROXY
-  - DOMAIN-SUFFIX,sourceforge.net,PROXY
-  - DOMAIN-SUFFIX,xiaomi.eu,PROXY
-  - DOMAIN-SUFFIX,designsystemsforfigma.com,PROXY
-  - DOMAIN-SUFFIX,pt1lib.org,PROXY
-  - DOMAIN-SUFFIX,feishu.cn,PROXY
-  - DOMAIN-SUFFIX,z-lib.org,PROXY
-  - DOMAIN-SUFFIX,wireguard.com,PROXY
-  - DOMAIN-SUFFIX,flaticon.com,PROXY
-  - DOMAIN-SUFFIX,rabbitmq.com,PROXY
-  - DOMAIN-SUFFIX,opensea.io,PROXY
-  - DOMAIN-SUFFIX,rxliuli.com,PROXY 
-  - DOMAIN-SUFFIX,mrsheep.xyz,PROXY 
-  - DOMAIN-SUFFIX,g.co,PROXY
-  - DOMAIN-SUFFIX,browzzy.com,PROXY
-  - DOMAIN-SUFFIX,wakatime.com,PROXY
-  - DOMAIN-SUFFIX,hostloc.com,PROXY
-  - DOMAIN-SUFFIX,cloudflare.com,PROXY
-  - DOMAIN-SUFFIX,ift.tt,PROXY
-  - DOMAIN-SUFFIX,youtrack.jetbrains.com,PROXY
-  - DOMAIN-KEYWORD,mvnrepository,PROXY
-  - DOMAIN-SUFFIX,okx.com,PROXY
-  - DOMAIN,nextjs.org,PROXY
-  - DOMAIN,v2rayssr.com,PROXY
-  - DOMAIN,yugogo.xyz,PROXY
-  - DOMAIN,monkeytype.com,PROXY
-  - DOMAIN,cn1lib.org,PROXY
-  - DOMAIN,cn1lib.org,PROXY
-  - DOMAIN,kuaichedao.co,PROXY
-  - DOMAIN,bgp.he.net,PROXY
-  - DOMAIN-SUFFIX,github.blog,PROXY
-  - DOMAIN,luciovilla.com,PROXY
-  - DOMAIN,www.heibaizhibo.com,PROXY
-  - DOMAIN,emojiall.com,PROXY
-  - DOMAIN,www.msftconnecttest.com,PROXY
-  - RULE-SET,Unbreak,DIRECT
-  - RULE-SET,DisneyPlus,DisneyPlus
+  - GEOSITE,category-ads-all,REJECT
+  - GEOSITE,icloud@cn,DIRECT
+  - GEOSITE,apple@cn,DIRECT
+  - GEOSITE,apple-cn,DIRECT
+  - GEOSITE,microsoft@cn,DIRECT
+  - GEOSITE,facebook,PROXY
+  - GEOSITE,youtube,PROXY
+  - GEOSITE,geolocation-cn,DIRECT
+  - GEOSITE,geolocation-!cn,PROXY
+  - GEOIP,cn,DIRECT
   - RULE-SET,Streaming,Streaming
-  - RULE-SET,Global,PROXY
-  - RULE-SET,China,DIRECT
   - IP-CIDR,192.168.0.0/16,DIRECT
   - IP-CIDR,10.0.0.0/8,DIRECT
   - IP-CIDR,127.0.0.0/8,DIRECT
