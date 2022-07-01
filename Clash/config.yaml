@@ -1,5 +1,4 @@
-port: 7890
-socks-port: 7891
+mixed-port: 7890
 allow-lan: true
 bind-address: "*"
 mode: Rule
@@ -14,10 +13,11 @@ profile:
   tracing: true
 dns:
   enable: true
-  enhanced-mode: fake-ip
+  use-hosts: true
+  enhanced-mode: redir-host
   nameserver:
-    - 114.114.114.114
     - 223.5.5.5
+    - 114.114.114.114
 # tun:
 #   enable: true
 #   stack: gvisor
