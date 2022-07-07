@@ -29,6 +29,13 @@ disney_check = type=generic,script-path=https://gist.githubusercontent.com/Hysee
 # Youtube Premium 检测
 youtube_premium_check = type=generic,script-path=https://gist.githubusercontent.com/Hyseen/5ae36a6a5cb5690b1f2bff4aa19c766f/raw/youtube_premium_check.js?version=1633090827446,argument=title=YouTube
 
+# Grow
+Grow = type=http-response,pattern=^https?:\/\/api\.revenuecat\.com\/v\d\/receipts$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/I-am-R-E/QuantumultX/main/JavaScript/Grow.js,script-update-interval=0
+
+# Unlock Grow
+Unlock Grow = type=http-response,pattern=^https?:\/\/api\.revenuecat\.com\/v\d\/subscribers\/(\$RCAnonymousID\%)?(\w)+$,requires-body=1,max-size=0,script-path=https://raw.githubusercontent.com/I-am-R-E/QuantumultX/main/JavaScript/Grow.js,script-update-interval=0
+
+
 [Panel]
 # Surge Info
 SurgePro_ReloadProfile = script-name=SurgePro_ReloadProfile,update-interval=1
@@ -53,3 +60,6 @@ Sub_info = script-name=Sub_info,update-interval=43200
 
 # 策略组面板 可重复配置 注意修改相应字段
 groupPanel = script-name=groupPanel,update-interval=5
+
+[MITM]
+hostname =  %APPEND% api.revenuecat.com
