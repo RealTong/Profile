@@ -1,8 +1,0 @@
-Host WULANREN-SERVER
-    HostName server.wushutong.cn
-    User wulanren
-    Port 22
-Host Tencent-Beijing
-    HostName tencent.wushutong.cn
-    User wulanren
-    Port 22
