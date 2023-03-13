@@ -13,6 +13,7 @@ Set-PSReadLineOption -PredictionViewStyle ListView
 Set-PSReadLineOption -HistorySearchCursorMovesToEnd
 # 设置 Tab 为菜单补全和 Intellisense
 Set-PSReadLineKeyHandler -Key "Tab" -Function MenuComplete
+# Set-PSReadLineKeyHandler -Chord 'Ctrl+d,Ctrl+c' -Function CaptureScreen
 
 # 使用 Alt+W 将命令保存到 history 但并不执行
 Set-PSReadLineKeyHandler -Key Alt+w `
@@ -85,13 +86,24 @@ function GetMyIp {
     curl -L tool.lu/ip
 }
 
-
 function TouchFile {
     if((Test-Path -Path ($args[0])) -eq $false) {
         Set-Content -Path ($args[0]) -Value ($null)
     } else {
         (Get-Item ($args[0])).LastWriteTime = Get-Date 
     }
+}
+
+function ?? {
+    github-copilot-cli what-the-shell $args[0]
+}
+
+function git? {
+    github-copilot-cli git-assist $args[0]
+}
+
+function gh? {
+    github-copilot-cli gh-assist $args[0]
 }
 
 function CdAndOpen {
@@ -101,10 +113,11 @@ function CdAndCode {
     cd $args[0] ; code .
 }
 
+Remove-Item Alias:ni -Force -ErrorAction Ignore
+
 Set-Alias open Invoke-Item
 Set-Alias myip GetMyIp
 Set-Alias touch TouchFile
-
 Set-Alias co CdAndOpen
 Set-Alias cc CdAndCode
 Set-Alias ip ipconfig
