@@ -1,103 +1,171 @@
 mixed-port: 7890
+# authentication:
+#   - "RealTong:RealTong233."
 allow-lan: true
 bind-address: "*"
 mode: Rule
 log-level: info
 ipv6: false
 external-ui: ./yacd
-external-controller: 127.0.0.1:9090
+external-controller: :9090
 secret: ""
 hosts: null
+geodata-mode: true
+tcp-concurrent: true
 profile:
-  # open tracing exporter API
   tracing: true
+  store-selected: true
+sniffer:
+  enable: true
+  sniffing:
+    - tls
+    - http
+  skip-domain:
+    - 'Mijia Cloud'
+    - 'dlg.io.mi.com'
+    - '+.apple.com'
 dns:
   enable: true
-  use-hosts: true
+  listen: 0.0.0.0:53
+  ipv6: false
   enhanced-mode: redir-host
-  nameserver:
+  fake-ip-range: 28.0.0.1/8
+  fake-ip-filter: # 列表中的域名返回真实IP, 而不是FakeIP
+     - '*.lan'
+     - localhost.ptlogin2.qq.com
+  default-nameserver:
+    - 119.29.29.29
     - 223.5.5.5
-    - 114.114.114.114
-# tun:
-#   enable: true
-#   stack: gvisor
-#   dns-hijack:
-#     - 198.18.0.2:53
-#   auto-route: true
-#   auto-detect-interface: true
+    - 10.0.0.1
+  nameserver:
+    - 1.1.1.1
+    - 8.8.8.8
+    - tls://dns.google
+    - tls://1.0.0.1
+    - 10.0.0.1
+  proxy-server-nameserver:
+    - https://doh.pub/dns-query
+  nameserver-policy:
+    "+.msftconnecttest.com": https://doh.pub/dns-query
+    "*.wst.sh": 10.0.0.1#WG-HOME
+tun:
+  enable: true
+  stack: system
+  dns-hijack:
+    - 'any:53'
+  auto-route: true
+  auto-detect-interface: true
 proxies:
-  - name: hysteria
-    type: hysteria
-    server: SERVERIP
-    port: PORT
-    obfs: "OBFS"
-    auth_str: PASSWORD
-    alpn: "ayaya"
-    up: '50'          #若不写单位，默认为Mbps
-    down: '50'
-    skip-cert-verify: false 
-    # retry: 3, // 启动时连接服务器的重试次数。默认为 0 不重试，负数为无限重试
-    # retry_interval: 5, // 重试间隔，单位为秒
-  - name: HK Azure
-    type: trojan
-    server: SERVERIP
-    port: PORT
-    password: PASSWORD
-    udp: false
-  - name: HK 香港
-    type: trojan
-    server: SERVERIP
-    port: PORT
-    password: PASSWORD
-    udp: false
+
 proxy-groups:
-  - name: PROXY
-    proxies:
-      - hysteria
-      - HK 香港
-      - HK Azure
-    type: select
-  - name: AUTO
+  - name: Auto
     type: url-test
-    proxies:
-      - HK 香港
-      - hysteria
-      - HK Azure
-    url: "http://www.gstatic.com/generate_204"
+    tolerance: 150  # 延迟容忍度 容差值
+    lazy: false
+    url: http://www.gstatic.com/generate_204
     interval: 300
-  - name: Streaming
     proxies:
-      - HK 香港
-      - HK Azure
-      - hysteria
-      - DIRECT
+
+  - name: Hysteria
     type: select
+    proxies:
+
+  - name: Trojan
+    type: select
+    proxies:
+
+  - name: Proxy
+    type: select
+    proxies:
+
+  - name: Streaming
+    type: select
+    proxies:
+
+  - name: Cryptocurrency
+    type: select
+    proxies:
+
+  - name: SpeedTest
+    type: select
+    proxies:
+
 rule-providers:
-  Streaming:
+  # 加密货币交易所
+  Cryptocurrency:
     type: http
+    interval: 600
     behavior: classical
-    path: ./RuleSet/Streaming.yaml
-    url: "https://raw.githubusercontent.com/DivineEngine/Profiles/master/Clash/RuleSet/StreamingMedia/Streaming.yaml"
-    interval: 86400
+    path: ./Rule-Provider/Cryptocurrency.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cryptocurrency/Cryptocurrency.yaml
+  # 流媒体服务(国际)
+  GlobalMedia_Classical:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/GlobalMedia_Classical.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GlobalMedia/GlobalMedia_Classical.yaml
+  # 局域网地址
+  Lan:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/Lan.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Lan/Lan.yaml
+  # iCloudPrivateRelay
+  iCloudPrivateRelay:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/iCloudPrivateRelay.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/iCloudPrivateRelay/iCloudPrivateRelay.yaml
+  # Google FCM
+  GoogleFCM:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/GoogleFCM.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.yaml
+  # SpeedTest
+  SpeedTest:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/Speedtest.yaml
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml
 rules:
-  - GEOSITE,category-ads-all,REJECT
+  # WireGuard 分流
+  - IP-CIDR,10.0.0.0/24,WG-HOME
+  - IP-CIDR,10.0.1.0/24,WG-HOME
+  - DOMAIN-SUFFIX,wst.sh,WG-HOME
+  - IP-CIDR,10.0.3.0/24,qingdao
+  # Rule-Provider
+  - RULE-SET,Cryptocurrency,Cryptocurrency
+  - RULE-SET,GlobalMedia_Classical,Streaming
+  - RULE-SET,Lan,DIRECT
+  - RULE-SET,iCloudPrivateRelay,Proxy
+  - RULE-SET,GoogleFCM,Proxy
+  - RULE-SET,SpeedTest,SpeedTest
+  # 入口IP
+  - SRC-IP-CIDR,10.0.0.0/24,WG-HOME
+  - SRC-IP-CIDR,10.0.1.0/24,WG-HOME
+  - SRC-IP-CIDR,10.0.3.0/24,qingdao
+  # 私有IP
+  - DOMAIN-SUFFIX,bing.com,Proxy
   - GEOSITE,icloud@cn,DIRECT
   - GEOSITE,apple@cn,DIRECT
   - GEOSITE,apple-cn,DIRECT
   - GEOSITE,microsoft@cn,DIRECT
-  - GEOSITE,facebook,PROXY
-  - GEOSITE,youtube,PROXY
+  - GEOSITE,youtube,Proxy
   - GEOSITE,geolocation-cn,DIRECT
-  - GEOSITE,geolocation-!cn,PROXY
-  - GEOIP,cn,DIRECT
-  - RULE-SET,Streaming,Streaming
-  - IP-CIDR,192.168.0.0/16,DIRECT
-  - IP-CIDR,10.0.0.0/8,DIRECT
-  - IP-CIDR,127.0.0.0/8,DIRECT
-  - IP-CIDR,100.64.0.0/10,DIRECT
-  - IP-CIDR,224.0.0.0/4,DIRECT
-  - IP-CIDR,fe80::/10,DIRECT
-  - IP-CIDR,119.28.28.28/32,DIRECT
-  - IP-CIDR,182.254.116.0/24,DIRECT
+  # Domain-Suffix
+  - DOMAIN-SUFFIX,githubusercontent.com,Proxy # 防止githubusercontent.com被污染导致启动时无法下载规则
+  - DOMAIN-SUFFIX,openai.com,SJC-Hysteria
+  # 自定义规则
+  - DOMAIN-SUFFIX,imgse.com,Proxy
+  - DOMAIN-SUFFIX,ax1x.com,Proxy
+  - DOMAIN-SUFFIX,github.com,Proxy
+  # GEO & 兜底
   - GEOIP,CN,DIRECT
-  - MATCH,PROXY
+  - GEOSITE,CN,DIRECT
+  - MATCH,Proxy

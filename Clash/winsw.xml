@@ -1,0 +1,9 @@
+<service>
+    <id>Meta</id>
+    <name>Meta</name>
+    <description>Meta Service</description>
+    <executable>meta</executable>
+    <arguments>-d .</arguments>
+    <logpath>./logs</logpath>
+    <logmode>reset</logmode>
+</service>

@@ -34,6 +34,10 @@
             "keys": "ctrl+shift+down"
         },
         {
+            "command": "unbound",
+            "keys": ""
+        },
+        {
             "command": 
             {
                 "action": "splitPane",
@@ -44,14 +48,12 @@
         },
         {
             "command": "closeWindow"
-        },
-        {
-            "command": "unbound",
-            "keys": ""
         }
     ],
     "alwaysOnTop": false,
+    "alwaysShowNotificationIcon": false,
     "alwaysShowTabs": true,
+    "autoHideWindow": false,
     "copyFormatting": "none",
     "copyOnSelect": true,
     "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -68,10 +70,11 @@
         "list": 
         [
             {
+                "adjustIndistinguishableColors": "always",
                 "antialiasingMode": "cleartype",
                 "backgroundImage": "ms-appdata:///roaming/asciidawn.png",
                 "backgroundImageOpacity": 0.0,
-                "colorScheme": "rose-pine-moon",
+                "colorScheme": "GitHub Dark",
                 "commandline": "%SystemRoot%\\System32\\WindowsPowerShell\\v1.0\\powershell.exe -nologo",
                 "cursorHeight": 70,
                 "cursorShape": "filledBox",
@@ -79,7 +82,7 @@
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font",
-                    "size": 10,
+                    "size": 10.0,
                     "weight": "normal"
                 },
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
@@ -95,15 +98,15 @@
             {
                 "antialiasingMode": "cleartype",
                 "backgroundImage": null,
-                "backgroundImageOpacity": 0.10000000000000001,
+                "backgroundImageOpacity": 0.1,
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font Mono",
-                    "size": 10,
+                    "size": 10.0,
                     "weight": "normal"
                 },
                 "guid": "{b453ae62-4e3d-5e58-b989-0a998ec441b8}",
-                "hidden": false,
+                "hidden": true,
                 "icon": "https://raw.githubusercontent.com/RealTong/Profile/main/Dotfiles/Windows/wt_icons/azure.png",
                 "name": "Azure Cloud Shell",
                 "opacity": 50,
@@ -114,13 +117,13 @@
             {
                 "antialiasingMode": "cleartype",
                 "backgroundImage": "ms-appdata:///roaming/china.png",
-                "backgroundImageOpacity": 0.10000000000000001,
+                "backgroundImageOpacity": 0.1,
                 "colorScheme": "Tango Dark",
-                "commandline": "ssh Home-Server",
+                "commandline": "ssh HomeServer",
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font Mono",
-                    "size": 10,
+                    "size": 10.0,
                     "weight": "normal"
                 },
                 "guid": "{96c5aac7-f880-4eaa-a993-5de0ae48c96d}",
@@ -129,19 +132,19 @@
                 "opacity": 75,
                 "padding": "8",
                 "startingDirectory": null,
-                "tabTitle": "Home-Server",
+                "tabTitle": "Ubuntu Server",
                 "useAcrylic": true
             },
             {
                 "antialiasingMode": "cleartype",
                 "backgroundImage": "ms-appdata:///roaming/china.png",
-                "backgroundImageOpacity": 0.10000000000000001,
+                "backgroundImageOpacity": 0.1,
                 "colorScheme": "Tango Dark",
                 "commandline": "ssh Tencent-Cloud",
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font Mono",
-                    "size": 10,
+                    "size": 10.0,
                     "weight": "normal"
                 },
                 "guid": "{25569b74-8d71-4a68-882e-c1f1a9c55d8b}",
@@ -160,12 +163,12 @@
             },
             {
                 "backgroundImage": "ms-appdata:///roaming/beachhouses.jpg",
-                "backgroundImageOpacity": 0.29999999999999999,
-                "colorScheme": "rose-pine-moon",
+                "backgroundImageOpacity": 0.3,
+                "colorScheme": "iceberg-light",
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font Mono",
-                    "size": 10,
+                    "size": 10.0,
                     "weight": "normal"
                 },
                 "guid": "{17bf3de4-5353-5709-bcf9-835bd952a95e}",
@@ -526,56 +529,36 @@
             "yellow": "#808000"
         },
         {
-            "background": "#191724",
-            "black": "#26233A",
-            "blue": "#9CCFD8",
-            "brightBlack": "#6E6A86",
-            "brightBlue": "#9CCFD8",
-            "brightCyan": "#EBBCBA",
-            "brightGreen": "#31748F",
-            "brightPurple": "#C4A7E7",
-            "brightRed": "#EB6F92",
-            "brightWhite": "#E0DEF4",
-            "brightYellow": "#F6C177",
-            "cursorColor": "#555169",
-            "cyan": "#EBBCBA",
-            "foreground": "#E0DEF4",
-            "green": "#31748F",
-            "name": "rose-pine",
-            "purple": "#C4A7E7",
-            "red": "#EB6F92",
-            "selectionBackground": "#2A2837",
-            "white": "#E0DEF4",
-            "yellow": "#F6C177"
-        },
-        {
-            "background": "#232136",
-            "black": "#393552",
-            "blue": "#9CCFD8",
-            "brightBlack": "#817C9C",
-            "brightBlue": "#9CCFD8",
-            "brightCyan": "#EA9A97",
-            "brightGreen": "#3E8FB0",
-            "brightPurple": "#C4A7E7",
-            "brightRed": "#EB6F92",
-            "brightWhite": "#E0DEF4",
-            "brightYellow": "#F6C177",
-            "cursorColor": "#59546D",
-            "cyan": "#EA9A97",
-            "foreground": "#E0DEF4",
-            "green": "#3E8FB0",
-            "name": "rose-pine-moon",
-            "purple": "#C4A7E7",
-            "red": "#EB6F92",
-            "selectionBackground": "#312F44",
-            "white": "#E0DEF4",
-            "yellow": "#F6C177"
+            "background": "#E8E9EC",
+            "black": "#DCDFE7",
+            "blue": "#2D539E",
+            "brightBlack": "#8389A3",
+            "brightBlue": "#22478E",
+            "brightCyan": "#327698",
+            "brightGreen": "#598030",
+            "brightPurple": "#6845AD",
+            "brightRed": "#CC3768",
+            "brightWhite": "#262A3F",
+            "brightYellow": "#B6662D",
+            "cursorColor": "#33374C",
+            "cyan": "#3F83A6",
+            "foreground": "#33374C",
+            "green": "#668E3D",
+            "name": "iceberg-light",
+            "purple": "#7759B4",
+            "red": "#CC517A",
+            "selectionBackground": "#33374C",
+            "white": "#33374C",
+            "yellow": "#C57339"
         }
     ],
     "showTabsInTitlebar": true,
     "showTerminalTitleInTitlebar": false,
-    "startOnUserLogin": false,
+    "snapToGridOnResize": true,
+    "startOnUserLogin": true,
+    "tabWidthMode": "equal",
     "theme": "system",
+    "themes": [],
     "useAcrylicInTabRow": false,
     "windowingBehavior": "useNew"
 }
