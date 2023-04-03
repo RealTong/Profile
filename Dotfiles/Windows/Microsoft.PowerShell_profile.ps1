@@ -96,7 +96,8 @@ function Set-ThemeMode {
         [switch] $SystemMode
     )
     $RegPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    # 根据 Mode 参数设置 SystemUsesLightTheme 和 AppsUseLightTheme 的值
+    # 根据 Mode 参数设置 SystemUsesLightTheme(Windows模式) 和 AppsUseLightTheme(应用模式) 的值
+    # 1: light, 0: dark
     switch ($Mode) {
         "dark" {
             # New-ItemProperty -Path $RegPath -Name "SystemUsesLightTheme" -Value "0" -PropertyType "DWORD" -Force | Out-Null
@@ -134,7 +135,9 @@ function Get-MyIP {
             
             Write-Output ""
         }
-            # Get external IPv4 and IPv6 addresses
+        # 禁用进度条
+        $ProgressPreference = 'SilentlyContinue'
+        # Get external IPv4 and IPv6 addresses
         $ipv4_external_guonei = Invoke-WebRequest -Uri "https://myip.ipip.net/s" -UseBasicParsing |
             Select-String -Pattern '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' |
             ForEach-Object { $_.Matches.Value }
@@ -155,6 +158,8 @@ function Get-MyIP {
             Select-Object -Property country_name, region_name, city_name, ip
             Write-Output "Location: $($ipinfo_external.city_name), $($ipinfo_external.region_name), $($ipinfo_external.country_name)"
         }
+        # 启用进度条
+        $ProgressPreference = 'Continue'
 }
 
 
