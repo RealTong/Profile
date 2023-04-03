@@ -86,6 +86,7 @@ function GetMyIp {
     curl -L tool.lu/ip
 }
 
+
 function TouchFile {
     if((Test-Path -Path ($args[0])) -eq $false) {
         Set-Content -Path ($args[0]) -Value ($null)
@@ -94,6 +95,76 @@ function TouchFile {
     }
 }
 
+function Set-ThemeMode {
+    param (
+        [string] $Mode,
+        [switch] $SystemMode
+    )
+    $RegPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
+    # 根据 Mode 参数设置 SystemUsesLightTheme 和 AppsUseLightTheme 的值
+    switch ($Mode) {
+        "dark" {
+            # New-ItemProperty -Path $RegPath -Name "SystemUsesLightTheme" -Value "0" -PropertyType "DWORD" -Force | Out-Null
+            New-ItemProperty -Path $RegPath -Name "AppsUseLightTheme" -Value "0" -PropertyType "DWORD" -Force | Out-Null
+            Write-Output "应用主题模式已更改为深色模式。"
+        }
+        "light" {
+            # New-ItemProperty -Path $RegPath -Name "SystemUsesLightTheme" -Value "1" -PropertyType "DWORD" -Force | Out-Null
+            New-ItemProperty -Path $RegPath -Name "AppsUseLightTheme" -Value "1" -PropertyType "DWORD" -Force | Out-Null
+            Write-Output "应用主题模式已更改为亮色模式。"
+        }
+        default {
+            Write-Output "无效的主题模式。请输入 'dark' 或 'light'。"
+        }
+    }
+}
+
+function Get-MyIP {
+    $wifi = (Get-NetConnectionProfile).Name
+    Get-NetAdapter | Where-Object {($_.InterfaceDescription -match 'wireless') -or ($_.InterfaceDescription -match 'ethernet')} |
+        ForEach-Object {
+            $adapter = $_
+            $ipv4 = $adapter | Get-NetIPAddress | Where-Object { $_.AddressFamily -eq 'IPv4' } | Select-Object -First 1
+            $ipv6 = $adapter | Get-NetIPAddress | Where-Object { $_.AddressFamily -eq 'IPv6' } | Select-Object -First 1
+
+            Write-Output "Adapter: $($adapter.Name)"
+            Write-Output "Interface Name: $wifi"
+            Write-Output ""
+            if ($ipv4) {
+                Write-Output "局域网IPv4 Address: $($ipv4.IPAddress)"
+            }
+            if ($ipv6) {
+                Write-Output "局域网IPv6 Address: $($ipv6.IPAddress)"
+            }
+            
+            Write-Output ""
+        }
+            # Get external IPv4 and IPv6 addresses
+        $ipv4_external_guonei = Invoke-WebRequest -Uri "https://myip.ipip.net/s" -UseBasicParsing |
+            Select-String -Pattern '\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}' |
+            ForEach-Object { $_.Matches.Value }
+        $ipv4_external_guowai = (Invoke-WebRequest -Uri "ip.sb").Content.Trim()
+
+        if($ipv4_external_guonei) {
+            Write-Output "External IPv4 Address: $($ipv4_external_guonei)"
+            $ipinfo_external = Invoke-RestMethod -Uri "https://ip.js.cool/ipip?ip=$ipv4_external_guonei" |
+            Select-Object -ExpandProperty data |
+            Select-Object -Property country_name, region_name, city_name, ip
+            Write-Output "Location: $($ipinfo_external.city_name), $($ipinfo_external.region_name), $($ipinfo_external.country_name)"
+        }
+        Write-Output ""
+        if($ipv4_external_guowai) {
+            Write-Output "External IPv4 Address: $($ipv4_external_guowai)"
+            $ipinfo_external = Invoke-RestMethod -Uri "https://ip.js.cool/ipip?ip=$ipv4_external_guowai" |
+            Select-Object -ExpandProperty data |
+            Select-Object -Property country_name, region_name, city_name, ip
+            Write-Output "Location: $($ipinfo_external.city_name), $($ipinfo_external.region_name), $($ipinfo_external.country_name)"
+        }
+}
+
+
+
+# 得到github-copilot-cli what-the-shell $args[0] 返回参数, 将结果(结果在--- Command ---下面一行)复制到剪切板
 function ?? {
     github-copilot-cli what-the-shell $args[0]
 }
@@ -115,12 +186,22 @@ function CdAndCode {
 
 Remove-Item Alias:ni -Force -ErrorAction Ignore
 
+# $DefaultUser = 'WULANREN'
+
+# 设置别名
+# Set-Alias ls Get-ChildItemColor -option AllScope
+# Set-Alias ll Get-ChildItemColorFormatWide -option AllScope
+# Set-Alias la Get-ChildItemColorFormatWide -option AllScope
 Set-Alias open Invoke-Item
 Set-Alias myip GetMyIp
 Set-Alias touch TouchFile
+# Set-Alias dns QueryDNS
 Set-Alias co CdAndOpen
 Set-Alias cc CdAndCode
-Set-Alias ip ipconfig
+Set-Alias ip Get-MyIP
 
 Set-Alias uuid New-Guid
+Set-Alias theme Set-ThemeMode
+# Set-PoshPrompt gmay
+# Set-PoshPrompt honukai
 Set-PoshPrompt wopian
