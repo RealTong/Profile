@@ -82,11 +82,6 @@ If (Test-Path Alias:curl) {Remove-Item Alias:curl}
 
 function GoBack { Set-Location .. }
 
-function GetMyIp { 
-    curl -L tool.lu/ip
-}
-
-
 function TouchFile {
     if((Test-Path -Path ($args[0])) -eq $false) {
         Set-Content -Path ($args[0]) -Value ($null)
@@ -186,16 +181,8 @@ function CdAndCode {
 
 Remove-Item Alias:ni -Force -ErrorAction Ignore
 
-# $DefaultUser = 'WULANREN'
-
-# 设置别名
-# Set-Alias ls Get-ChildItemColor -option AllScope
-# Set-Alias ll Get-ChildItemColorFormatWide -option AllScope
-# Set-Alias la Get-ChildItemColorFormatWide -option AllScope
 Set-Alias open Invoke-Item
-Set-Alias myip GetMyIp
 Set-Alias touch TouchFile
-# Set-Alias dns QueryDNS
 Set-Alias co CdAndOpen
 Set-Alias cc CdAndCode
 Set-Alias ip Get-MyIP
@@ -205,3 +192,6 @@ Set-Alias theme Set-ThemeMode
 # Set-PoshPrompt gmay
 # Set-PoshPrompt honukai
 Set-PoshPrompt wopian
+
+
+$Env:SSH_AUTH_SOCK = $(gpgconf --list-dirs agent-ssh-socket)
