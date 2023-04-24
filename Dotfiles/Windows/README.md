@@ -2,7 +2,7 @@
 
 <p align="center">
   <img
-    src="/docs/images/oh-my-posh.png"
+    src="/docs/oh-my-post-theme.png"
     alt="Oh My Posh – theme"
   />
 </p>
