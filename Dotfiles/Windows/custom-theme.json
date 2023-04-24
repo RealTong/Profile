@@ -1,0 +1,111 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [ 
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "foreground": "cyan",
+          "style": "powerline",
+          "template": "{{ .Icon }}<#F50057>{{ .UserName }}</> at <#F9A825>{{ .HostName }}</> in ",
+          "properties": {
+            "windows": " "
+          },
+          "type": "os"
+        },
+        {
+          "foreground": "cyan",
+          "properties": {
+            "style": "full",
+            "folder_separator_icon": "/",
+            "home_icon": "~",
+            "mapped_locations": {
+              "C:\\Users\\RealTong\\.config": "\uF085",
+              "C:\\Users\\RealTong\\GitHub": "\uF09B",
+              "C:\\Users\\RealTong\\OneDrive": "\uF0C2",
+              "C:\\Users\\RealTong\\Pictures": "\uF03E",
+              "C:\\Users\\RealTong\\Videos": "\uF03D",
+              "C:\\Users\\RealTong\\Downloads": "\uF019",
+              "C:\\Users\\RealTong\\Documents": "\uF0C5",
+              "C:\\Users\\RealTong\\Desktop": "\uF108",
+              "C:\\Users\\RealTong\\WebstormProjects": "\uf81d",
+              "C:\\Users\\RealTong\\IdeaProjects": "\ue256",
+              "C:\\Users\\RealTong\\AndroidStudioProjects": "\uf17b",
+              "C:\\Users\\RealTong\\PycharmProjects": "\uf81f",
+              "C:\\Users\\RealTong\\GolandProjects": "\ufcd1"
+            }
+          },
+          "style": "plain",
+          "template": "{{ .Path }}",
+          "type": "path"
+        },
+        {
+          "foreground": "lightYellow",
+          "style": "plain",
+          "template": "<lightBlue>\ue702 (</>{{ .HEAD }}<lightBlue>)</>",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "project",
+          "style": "powerline",
+          "template": "{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }} {{.Version}}{{ end }} {{ if .Name }} <o>{{.Name}}</o> {{ end }}{{ end }} "
+        },
+        {
+          "type": "sysinfo",
+          "foreground": "lightGreen",
+          "template": " {{ if gt .PhysicalPercentUsed 90 }}<#FF0000>{{ .PhysicalPercentUsed }}%</>{{ else if gt .PhysicalPercentUsed 70 }}<#00FF00>{{ .PhysicalPercentUsed }}%</>{{ else if gt .PhysicalPercentUsed 50 }}<#FFFF00>{{ .PhysicalPercentUsed }}%</>{{ else }}{{ .PhysicalPercentUsed }}%{{ end }}",
+          "properties": {
+            "precision": 2
+          },
+          "style": "plain"
+        },
+        {
+          "foreground": "lightGreen",
+          "style": "plain",
+          "template": " {{ .CurrentDate | date .Format }}",
+          "type": "time"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "lightGreen",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}red{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "powerline",
+          "template": "\u279c ",
+          "type": "exit"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "ytm",
+          "style": "plain",
+          "foreground": "lightYellow",
+          "template": "{{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}"
+        }
+        
+      ],
+      "type": "rprompt"
+    }
+  ],
+  "version": 2
+}

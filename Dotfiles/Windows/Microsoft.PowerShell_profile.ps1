@@ -1,10 +1,8 @@
-# Import-Module Get-ChildItemColor
-Import-Module oh-my-posh
+Import-Module Get-ChildItemColor
+Import-Module DockerCompletion
 Import-Module posh-git
-Import-Module -Name Terminal-Icons
+Import-Module Terminal-Icons
 Import-Module PSReadLine
-
-Invoke-Expression (& { (lua "C:\Users\RealTong\scoop\apps\z.lua\1.8.16\z.lua" --init powershell) -join "`n" })
 
 # 设置预测文本来源为历史记录
 Set-PSReadLineOption -PredictionSource History
@@ -90,14 +88,14 @@ function TouchFile {
     }
 }
 
+# 设置windows应用主题 # Set-ThemeMode dark 或者 Set-ThemeMode light
 function Set-ThemeMode {
     param (
         [string] $Mode,
         [switch] $SystemMode
     )
     $RegPath = "HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Personalize"
-    # 根据 Mode 参数设置 SystemUsesLightTheme(Windows模式) 和 AppsUseLightTheme(应用模式) 的值
-    # 1: light, 0: dark
+    # 根据 Mode 参数设置 SystemUsesLightTheme 和 AppsUseLightTheme 的值
     switch ($Mode) {
         "dark" {
             # New-ItemProperty -Path $RegPath -Name "SystemUsesLightTheme" -Value "0" -PropertyType "DWORD" -Force | Out-Null
@@ -112,6 +110,21 @@ function Set-ThemeMode {
         default {
             Write-Output "无效的主题模式。请输入 'dark' 或 'light'。"
         }
+    }
+}
+
+# 设置oh-my-posh主题 # Set-PoshPrompt wopian
+function Set-PoshPrompt {
+    param (
+        [string]$themeName
+    )
+
+    $themePath = Join-Path $env:POSH_THEMES_PATH "$themeName.omp.json"
+
+    if (Test-Path $themePath) {
+        oh-my-posh init pwsh --config $themePath | Invoke-Expression
+    } else {
+        Write-Error "Theme file not found: $themePath"
     }
 }
 
@@ -158,11 +171,9 @@ function Get-MyIP {
             Select-Object -Property country_name, region_name, city_name, ip
             Write-Output "Location: $($ipinfo_external.city_name), $($ipinfo_external.region_name), $($ipinfo_external.country_name)"
         }
-        # 启用进度条
+        # Enable progress bar
         $ProgressPreference = 'Continue'
 }
-
-
 
 # 得到github-copilot-cli what-the-shell $args[0] 返回参数, 将结果(结果在--- Command ---下面一行)复制到剪切板
 function ?? {
@@ -183,20 +194,27 @@ function CdAndOpen {
 function CdAndCode {
     cd $args[0] ; code .
 }
+# 用户source 重载配置文件
+function Reload-Profile {
+    . $PROFILE.CurrentUserCurrentHost
+}
 
 Remove-Item Alias:ni -Force -ErrorAction Ignore
 
+# Alias
 Set-Alias open Invoke-Item
 Set-Alias touch TouchFile
 Set-Alias co CdAndOpen
 Set-Alias cc CdAndCode
 Set-Alias ip Get-MyIP
-
 Set-Alias uuid New-Guid
 Set-Alias theme Set-ThemeMode
-# Set-PoshPrompt gmay
-# Set-PoshPrompt honukai
+Set-Alias source Reload-Profile
+
+
+# Init oh-my-posh theme
 Set-PoshPrompt wopian
-
-
-$Env:SSH_AUTH_SOCK = $(gpgconf --list-dirs agent-ssh-socket)
+# Init z.lua
+$luaPath = Join-Path (scoop prefix z.lua) 'z.lua'
+$luaPath = Resolve-Path $luaPath
+iex ($(lua $luaPath --init powershell once enhanced) -join "`n")
