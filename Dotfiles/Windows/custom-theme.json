@@ -54,7 +54,7 @@
         {
           "type": "project",
           "style": "powerline",
-          "template": "{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }} {{.Version}}{{ end }} {{ if .Name }} <o>{{.Name}}</o> {{ end }}{{ end }} "
+          "template": "{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }} {{.Version}}{{ end }} {{ if .Name }} <i>{{.Name}}</i> {{ end }}{{ end }} "
         },
         {
           "type": "sysinfo",
