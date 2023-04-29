@@ -20,29 +20,29 @@
             "folder_separator_icon": "/",
             "home_icon": "~",
             "mapped_locations": {
-              "C:\\Users\\RealTong\\.config": "\uF085",
-              "C:\\Users\\RealTong\\GitHub": "\uF09B",
-              "C:\\Users\\RealTong\\OneDrive": "\uF0C2",
-              "C:\\Users\\RealTong\\Pictures": "\uF03E",
-              "C:\\Users\\RealTong\\Videos": "\uF03D",
-              "C:\\Users\\RealTong\\Downloads": "\uF019",
-              "C:\\Users\\RealTong\\Documents": "\uF0C5",
-              "C:\\Users\\RealTong\\Desktop": "\uF108",
-              "C:\\Users\\RealTong\\WebstormProjects": "\uf81d",
-              "C:\\Users\\RealTong\\IdeaProjects": "\ue256",
-              "C:\\Users\\RealTong\\AndroidStudioProjects": "\uf17b",
-              "C:\\Users\\RealTong\\PycharmProjects": "\uf81f",
-              "C:\\Users\\RealTong\\GolandProjects": "\ufcd1"
+              "C:\\Users\\RealTong\\.config": "\uF085 ",
+              "C:\\Users\\RealTong\\GitHub": "\uF09B ",
+              "C:\\Users\\RealTong\\OneDrive": "\uF0C2 ",
+              "C:\\Users\\RealTong\\Pictures": "\uF03E ",
+              "C:\\Users\\RealTong\\Videos": "\uF03D ",
+              "C:\\Users\\RealTong\\Downloads": "\uF019 ",
+              "C:\\Users\\RealTong\\Documents": "\uF0C5 ",
+              "C:\\Users\\RealTong\\Desktop": "\uF108 ",
+              "C:\\Users\\RealTong\\WebstormProjects": "\uf81d ",
+              "C:\\Users\\RealTong\\IdeaProjects": "\ue256 ",
+              "C:\\Users\\RealTong\\AndroidStudioProjects": "\uf17b ",
+              "C:\\Users\\RealTong\\PycharmProjects": "\uf81f ",
+              "C:\\Users\\RealTong\\GolandProjects": "\ufcd1 "
             }
           },
           "style": "plain",
-          "template": "{{ .Path }}",
+          "template": "{{ .Path }} ",
           "type": "path"
         },
         {
           "foreground": "lightYellow",
           "style": "plain",
-          "template": "<lightBlue>\ue702 (</>{{ .HEAD }}<lightBlue>)</>",
+          "template": "<lightBlue> (</>{{ .HEAD }}<lightBlue>)</>",
           "type": "git"
         }
       ],
@@ -87,7 +87,7 @@
             "always_enabled": true
           },
           "style": "powerline",
-          "template": "\u279c ",
+          "template": "➜ ",
           "type": "exit"
         }
       ],
@@ -100,9 +100,16 @@
           "type": "ytm",
           "style": "plain",
           "foreground": "lightYellow",
-          "template": "{{ if ne .Status \"stopped\" }} {{ .Track }}{{ end }}"
-        }
-        
+          "template": "{{ if ne .Status \"stopped\" }}  {{ .Track }}{{ end }}"
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "template": "{{ .FormattedMs }}",
+          "properties": {
+            "style": "austin"
+          }
+        }   
       ],
       "type": "rprompt"
     }
