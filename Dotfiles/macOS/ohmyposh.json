@@ -1,0 +1,109 @@
+{
+  "$schema": "https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/main/themes/schema.json",
+  "blocks": [ 
+    {
+      "alignment": "left",
+      "segments": [
+        {
+          "foreground": "cyan",
+          "style": "powerline",
+          "template": "{{ .Icon }}<#F50057>{{ .UserName }}</> at <#F9A825>{{ .HostName }}</> in ",
+          "properties": {
+            "windows": " ",
+          "macos": " "
+          },
+          "type": "os"
+        },
+        {
+          "foreground": "cyan",
+          "properties": {
+            "style": "full",
+            "folder_separator_icon": "/",
+            "home_icon": "~",
+            "mapped_locations": {
+              "/Users/realtong": "~",
+              "/Users/realtong/.config": " ",
+              "/Users/realtong/Desktop": " ",
+              "/Users/realtong/Developer": " ",
+              "/Users/realtong/Documents": " ",
+              "/Users/realtong/Downloads": " ",
+              "/Users/realtong/Music": " ",
+              "/Users/realtong/Pictures": " ",
+              "/Users/realtong/Public": " ",
+              "/Users/realtong/Templates": " ",
+              "/Users/realtong/Videos": " ",
+              "/Users/realtong/Infmonkeys": "<#28EE64>\uF8FF</> "
+            }
+          },
+          "style": "plain",
+          "template": "{{ .Path }} ",
+          "type": "path"
+        },
+        {
+          "foreground": "lightYellow",
+          "style": "plain",
+          "template": "<lightBlue> (</>{{ .HEAD }}<lightBlue>)</>",
+          "type": "git"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "project",
+          "style": "powerline",
+          "template": "{{ if .Error }}{{ .Error }}{{ else }}{{ if .Version }} {{.Version}}{{ end }} {{ if .Name }} <i>{{.Name}}</i> {{ end }}{{ end }} "
+        },
+        {
+          "foreground": "lightGreen",
+          "style": "plain",
+          "template": " {{ .CurrentDate | date .Format }}",
+          "type": "time"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "left",
+      "newline": true,
+      "segments": [
+        {
+          "foreground": "lightGreen",
+          "foreground_templates": [
+            "{{ if gt .Code 0 }}red{{ end }}"
+          ],
+          "properties": {
+            "always_enabled": true
+          },
+          "style": "powerline",
+          "template": "➜ ",
+          "type": "exit"
+        }
+      ],
+      "type": "prompt"
+    },
+    {
+      "alignment": "right",
+      "segments": [
+        {
+          "type": "ytm",
+          "style": "plain",
+          "foreground": "lightYellow",
+          "template": "{{ if ne .Status \"stopped\" }}  {{ .Track }}{{ end }}"
+        },
+        {
+          "type": "executiontime",
+          "style": "plain",
+          "template": "{{ .FormattedMs }}",
+          "properties": {
+            "style": "austin"
+          }
+        }   
+      ],
+      "type": "rprompt"
+    }
+  ],
+  "version": 2
+}
