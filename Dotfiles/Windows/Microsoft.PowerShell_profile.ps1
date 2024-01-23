@@ -1,8 +1,12 @@
-Import-Module Get-ChildItemColor
-Import-Module DockerCompletion
-Import-Module posh-git
-Import-Module Terminal-Icons
-Import-Module PSReadLine
+# C:\Users\RealTong\Documents\WindowsPowerShell\Microsoft.PowerShell_profile.ps1
+
+$PSDefaultParameterValues = @{'Out-File:encoding'='utf8'}
+
+Import-Module Get-ChildItemColor # scoop install DockerCompletion
+Import-Module DockerCompletion # scoop install DockerCompletion
+Import-Module posh-git # scoop install "posh-git"
+Import-Module Terminal-Icons # scoop install "Terminal-Icons"
+Import-Module PSReadLine # scoop install PSReadLine
 
 # 设置预测文本来源为历史记录
 Set-PSReadLineOption -PredictionSource History
