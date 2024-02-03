@@ -99,3 +99,12 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+[[ -s /home/wulanren/.autojump/etc/profile.d/autojump.sh ]] && source /home/wulanren/.autojump/etc/profile.d/autojump.sh
+autoload -U compinit && compinit -u
+# . "/home/wulanren/.acme.sh/acme.sh.env"
+# maven
+export MAVEN_HOME=/usr/local/application/Maven
+# jdk 11
+export JAVA_HOME=/usr/local/application/JDK/JDK11
+export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
+export PATH=$JAVA_HOME/bin:$PATH:$MAVEN_HOME/bin:$PATH:/usr/local/application/Go/bin:$PATH:/usr/local/application/Gotop:$PATH:/usr/local/application/Node/bin:$PATH:/home/wulanren/go/bin:$PATH:
