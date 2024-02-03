@@ -1,6 +1,4 @@
 mixed-port: 7890
-# authentication:
-#   - "RealTong:RealTong233."
 allow-lan: true
 bind-address: "*"
 mode: Rule
@@ -15,48 +13,36 @@ tcp-concurrent: true
 profile:
   tracing: true
   store-selected: true
-sniffer:
-  enable: true
-  sniffing:
-    - tls
-    - http
-  skip-domain:
-    - 'Mijia Cloud'
-    - 'dlg.io.mi.com'
-    - '+.apple.com'
 dns:
   enable: true
   listen: 0.0.0.0:53
   ipv6: false
-  enhanced-mode: redir-host
+  enhanced-mode: fake-ip
   fake-ip-range: 28.0.0.1/8
   fake-ip-filter: # 列表中的域名返回真实IP, 而不是FakeIP
      - '*.lan'
+     - '*.wst.sh'
      - localhost.ptlogin2.qq.com
-  default-nameserver:
-    - 119.29.29.29
-    - 223.5.5.5
-    - 10.0.0.1
   nameserver:
-    - 1.1.1.1
-    - 8.8.8.8
-    - tls://dns.google
-    - tls://1.0.0.1
-    - 10.0.0.1
+    - quic://dns.alidns.com:784
+    - https://dns.alidns.com/dns-query
   proxy-server-nameserver:
     - https://doh.pub/dns-query
   nameserver-policy:
-    "+.msftconnecttest.com": https://doh.pub/dns-query
-    "*.wst.sh": 10.0.0.1#WG-HOME
+    "+.msftconnecttest.com": https://doh.pub/dns-query # 解决 Windows 网络图标「小地球」的问题
+    "*.wst.sh": 10.0.0.1#WG-HOME  # *.wst.sh 通过 WG-HOME 代理查询 10.0.0.1 的 DNS 服务7器
 tun:
   enable: true
-  stack: system
-  dns-hijack:
+  stack: system # macOS 使用 gvisor 有更好的性能
+  dns-hijack: # macOS 下，默认 dhcp 的 dns 会导致 dns 劫持失效，请配置公网DNS 或者手动指定 28.0.0.2
     - 'any:53'
   auto-route: true
   auto-detect-interface: true
 proxies:
-
+  - name: mitmproxy
+    type: http
+    server: 127.0.0.1
+    port: 8080
 proxy-groups:
   - name: Auto
     type: url-test
@@ -133,12 +119,25 @@ rule-providers:
     behavior: classical
     path: ./Rule-Provider/Speedtest.yaml
     url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.yaml
+  # Notion
+  Notion:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/Notion.yaml
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/Notion/Notion.yaml
+  # LinkedIn
+  LinkedIn:
+    type: http
+    interval: 600
+    behavior: classical
+    path: ./Rule-Provider/LinkedIn.yaml
+    url: https://cdn.jsdelivr.net/gh/blackmatrix7/ios_rule_script@master/rule/Clash/LinkedIn/LinkedIn.yaml
 rules:
-  # WireGuard 分流
+    # WireGuard 分流
   - IP-CIDR,10.0.0.0/24,WG-HOME
   - IP-CIDR,10.0.1.0/24,WG-HOME
   - DOMAIN-SUFFIX,wst.sh,WG-HOME
-  - IP-CIDR,10.0.3.0/24,qingdao
   # Rule-Provider
   - RULE-SET,Cryptocurrency,Cryptocurrency
   - RULE-SET,GlobalMedia_Classical,Streaming
@@ -146,26 +145,31 @@ rules:
   - RULE-SET,iCloudPrivateRelay,Proxy
   - RULE-SET,GoogleFCM,Proxy
   - RULE-SET,SpeedTest,SpeedTest
-  # 入口IP
-  - SRC-IP-CIDR,10.0.0.0/24,WG-HOME
-  - SRC-IP-CIDR,10.0.1.0/24,WG-HOME
-  - SRC-IP-CIDR,10.0.3.0/24,qingdao
-  # 私有IP
+  - RULE-SET,Notion,Proxy
+  - RULE-SET,LinkedIn,Proxy
+  # Domain-Suffix
   - DOMAIN-SUFFIX,bing.com,Proxy
+  - DOMAIN-SUFFIX,githubusercontent.com,Proxy # 防止githubusercontent.com被污染导致启动时无法下载规则
+  - DOMAIN-SUFFIX,openai.com,Proxy
+  - DOMAIN-SUFFIX,sentry.io,Proxy
+  - DOMAIN-SUFFIX,wpopenai002.openai.azure.com,Proxy
+  - DOMAIN-SUFFIX,bard.google.com,Proxy
+  - DOMAIN-SUFFIX,imgse.com,Proxy
+  - DOMAIN-SUFFIX,ax1x.com,Proxy
+  - DOMAIN-SUFFIX,github.com,Proxy
+  - DOMAIN-SUFFIX,wx.qq.com,DIRECT
+  - DOMAIN-SUFFIX,snssdk.com,DIRECT
+  - PROCESS-NAME,good-mitm,DIRECT
+  - PROCESS-NAME,mitmweb,DIRECT
+  - PROCESS-NAME,mitmproxy,DIRECT
+  # - AND,((DOMAIN-SUFFIX,baidu.com),(PROCESS-NAME,good-mitm)),DIRECT
+  - DOMAIN-SUFFIX,raycast.com,mitmproxy
+  # GEO & 兜底
   - GEOSITE,icloud@cn,DIRECT
   - GEOSITE,apple@cn,DIRECT
   - GEOSITE,apple-cn,DIRECT
   - GEOSITE,microsoft@cn,DIRECT
-  - GEOSITE,youtube,Proxy
   - GEOSITE,geolocation-cn,DIRECT
-  # Domain-Suffix
-  - DOMAIN-SUFFIX,githubusercontent.com,Proxy # 防止githubusercontent.com被污染导致启动时无法下载规则
-  - DOMAIN-SUFFIX,openai.com,SJC-Hysteria
-  # 自定义规则
-  - DOMAIN-SUFFIX,imgse.com,Proxy
-  - DOMAIN-SUFFIX,ax1x.com,Proxy
-  - DOMAIN-SUFFIX,github.com,Proxy
-  # GEO & 兜底
   - GEOIP,CN,DIRECT
   - GEOSITE,CN,DIRECT
   - MATCH,Proxy
