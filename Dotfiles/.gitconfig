@@ -1,0 +1,13 @@
+[user]
+        name = RealTong
+        email = i@wst.sh
+        signingkey = A9EA24D56A13E542
+[commit]
+        gpgsign = true
+[pull]
+        rebase = true
+[core]
+        excludesfile = /Users/realtong/.gitignore_global
+[advice]
+        skippedCherryPicks = false
+        addIgnoredFile = false
