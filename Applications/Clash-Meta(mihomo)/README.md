@@ -8,5 +8,5 @@
 1. mv macos.meta.service.plist /Library/LaunchDaemons/macos.meta.service.plist;
 2. sudo launchctl load macos.meta.service # 加载服务
 3. sudo launchctl unload macos.meta.service # 卸载服务
-4. sudo launchctl start macos.meta.service # 卸载服务
-5. sudo launchctl stop macos.meta.service # 卸载服务
+4. sudo launchctl start macos.meta.service # 启动服务
+5. sudo launchctl stop macos.meta.service # 关闭服务
