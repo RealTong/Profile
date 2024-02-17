@@ -108,20 +108,34 @@ alias 。。="cd .." # 返回上一级
 alias ...="cd ../.." # 返回上上级
 alias 。。。="cd ../.." # 返回上上级
 alias ....="cd ../../.." # 返回上上上级
+alias tm="heptapod run"
 
-
-# 启动 Meta 服务并设置DNS  https://github.com/MetaCubeX/mihomo/issues/248   DNS IP 取决于 config.yaml 的 fakeip
+# 启动 Meta 服务并设置DNS  https://github.com/MetaCubeX/mihomo/issues/248
 alias startmeta="networksetup -setdnsservers Wi-Fi 28.0.0.2 && sudo launchctl start sh.wst.meta.service"
 # 停止 Meta 服务并清空DNS
 alias stopmeta="sudo launchctl stop sh.wst.meta.service && networksetup -setdnsservers Wi-Fi Empty"
 
+
 mata_service() {
   if [[ $1 == "start" ]]; then
     startmeta
+    echo "Meta service started successfully."
   elif [[ $1 == "stop" ]]; then
     stopmeta
+    echo "Meta service stopped."
+  elif [[ $1 == "status" ]]; then
+    service_status=$(sudo launchctl list | grep sh.wst.meta.service)
+    if [[ -n $service_status ]]; then
+      echo "Meta service is running. PID: $(echo $service_status | awk '{print $1}')"
+    else
+      echo "Meta service is not running."
+    fi
+  elif [[ $1 == "restart" ]]; then
+    stopmeta
+    startmeta
+    echo "Meta service restarted successfully."
   else
-    echo "Usage: mata_service start | stop"
+    echo "Usage: mata_service start | stop | status | restart"
   fi
 }
 
